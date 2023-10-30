@@ -12,7 +12,7 @@ public class UserDao {
     private static final String QUERRY_REMOVE_RECORD = "DELETE FROM Users where id = ?;";
     private static final String QUERRY_SHOW_ALL_RECORDS = "SELECT * FROM Users;";
 
-    public User create(User user) {
+    public static User create(User user) {
         try (Connection conn = DbUtil.connect()) {
             PreparedStatement statement =
                     conn.prepareStatement(QUERRY_ADD_USER, Statement.RETURN_GENERATED_KEYS);
@@ -30,11 +30,11 @@ public class UserDao {
         }
     }
 
-    public String hashPassword(String password) {
+    public static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public User read(int getId) throws SQLException {
+    public static User read(int getId) throws SQLException {
         Connection conn = DbUtil.connect();
         PreparedStatement statGetRecordWithId = conn.prepareStatement(QUERRY_SHOW_RECORDS_WITH_ID);
         statGetRecordWithId.setInt(1, getId);
@@ -52,7 +52,7 @@ public class UserDao {
         return user;
     }
 
-    public void update(User user) throws SQLException {
+    public static void update(User user) throws SQLException {
         Connection conn = DbUtil.connect();
         PreparedStatement statUpdateRecord = conn.prepareStatement(QUERRY_UPDATE_RECORD);
         statUpdateRecord.setString(1, user.getUserName());
@@ -62,7 +62,7 @@ public class UserDao {
         statUpdateRecord.executeUpdate();
     }
 
-    public void delete(int userId) throws SQLException {
+    public static void delete(int userId) throws SQLException {
         Connection conn = DbUtil.connect();
         PreparedStatement statDeleteUser = conn.prepareStatement(QUERRY_REMOVE_RECORD);
         statDeleteUser.setInt(1, userId);
